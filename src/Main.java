@@ -13,7 +13,7 @@ public class Main {
         List<String> list = new ArrayList<>();
         try (Stream<Path> walk = Files.walk(Paths.get(path))) {
             list = walk.filter(Files::isRegularFile)
-                    .map(Path::toString)
+                    .map(x -> x.getFileName().toString())
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,21 +33,25 @@ public class Main {
         List<String> storageFiles = getFileNames(storage);
         List<String> destinationFiles = getFileNames(destination);
 
-        for(String name : storageFiles){
+        int i = 0;
+        while(i < storageFiles.size()){
+            String name = storageFiles.get(i);
             String match = destinationFiles.stream()
                     .filter(name::equals)
                     .findAny()
                     .orElse(null);
 
             if (match != null) {
-                destinationFiles.remove(match);
+                destinationFiles.remove(i);
                 storageFiles.remove(match);
+            } else {
+                i++;
             }
         }
 
         for (String file : storageFiles) {
             try{
-                copy(file);
+                copy(storage +  "\\" + file);
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -55,7 +59,7 @@ public class Main {
 
         for (String file : destinationFiles){
             try{
-                Files.delete(Paths.get(file));
+                Files.delete(Paths.get(destination + "\\" + file));
             } catch (IOException e){
                 e.printStackTrace();
             }
