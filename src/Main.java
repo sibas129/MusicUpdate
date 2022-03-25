@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.*;
 
 public class Main {
-    private static final String storage = "C:\\Users\\vlad_\\Desktop\\ComputerStorage";
-    private static final String destination = "C:\\Users\\vlad_\\Desktop\\MP3PlayerStorage";
+    private static final String STORAGE = "C:\\Users\\vlad_\\Desktop\\ComputerStorage";
+    private static final String DESTINATION = "C:\\Users\\vlad_\\Desktop\\MP3PlayerStorage";
 
     private static List<String> getFileNames (String path) {
         List<String> list = new ArrayList<>();
@@ -25,13 +25,13 @@ public class Main {
     private static void copy(String source) throws IOException {
         File sourceFile = new File(source);
 
-        Path destinationDir = Paths.get(destination);
+        Path destinationDir = Paths.get(DESTINATION);
         Files.copy(sourceFile.toPath(), destinationDir.resolve(sourceFile.getName()), StandardCopyOption.REPLACE_EXISTING);
     }
 
     public static void main(String[] args) {
-        List<String> storageFiles = getFileNames(storage);
-        List<String> destinationFiles = getFileNames(destination);
+        List<String> storageFiles = getFileNames(STORAGE);
+        List<String> destinationFiles = getFileNames(DESTINATION);
 
         int i = 0;
         while(i < storageFiles.size()){
@@ -51,7 +51,7 @@ public class Main {
 
         for (String file : storageFiles) {
             try{
-                copy(storage +  "\\" + file);
+                copy(STORAGE +  "\\" + file);
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -59,7 +59,7 @@ public class Main {
 
         for (String file : destinationFiles){
             try{
-                Files.delete(Paths.get(destination + "\\" + file));
+                Files.delete(Paths.get(DESTINATION + "\\" + file));
             } catch (IOException e){
                 e.printStackTrace();
             }
